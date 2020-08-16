@@ -5,14 +5,14 @@ import CreateUserRequest from '../dto/CreateUserRequest';
 import CreateUserResponse from '../dto/CreateUserResponse';
 
 class CreateUserService {
+  usersRepository = getRepository(User);
+
   async execute({
     name,
     email,
     password,
   }: CreateUserRequest): Promise<CreateUserResponse> {
-    const usersRepository = getRepository(User);
-
-    const checkUserExists = await usersRepository.findOne({
+    const checkUserExists = await this.usersRepository.findOne({
       where: { email },
     });
 
@@ -22,16 +22,22 @@ class CreateUserService {
 
     const hashedPassword = await hash(password, 8);
 
-    const user = usersRepository.create({
+    const user = this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
 
+    const savedUser = await this.saveUser(user);
+
+    return savedUser;
+  }
+
+  async saveUser(user: User): Promise<CreateUserResponse> {
     let responseUser: CreateUserResponse;
 
     try {
-      const entitySaved = await usersRepository.save(user);
+      const entitySaved = await this.usersRepository.save(user);
       responseUser = {
         name: entitySaved.name,
         email: entitySaved.email,
