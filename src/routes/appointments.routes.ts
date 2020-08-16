@@ -7,15 +7,15 @@ import Appointment from '../models/Appointment';
 
 const appoitmentsRouter = Router();
 
-appoitmentsRouter.get('/', (request, response) => {
+appoitmentsRouter.get('/', async (request, response) => {
   const appointmentsRepository = getCustomRepository(AppointmentRepository);
-  const appointments = appointmentsRepository.find();
+  const appointments = await appointmentsRepository.find();
 
   return response.json(appointments);
 });
 
 appoitmentsRouter.post('/', async (request, response) => {
-  const { provider, date } = request.body;
+  const { providerId, date } = request.body;
 
   const parsedDate = parseISO(date);
 
@@ -24,7 +24,7 @@ appoitmentsRouter.post('/', async (request, response) => {
   try {
     const appointment = await createAppointment.execute({
       date: parsedDate,
-      provider,
+      providerId,
     });
     return response.json(appointment);
   } catch (error) {
