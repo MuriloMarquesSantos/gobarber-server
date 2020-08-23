@@ -6,6 +6,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import UserResponse from '../dto/UserResponse';
+
 @Entity('users')
 class User {
   @PrimaryGeneratedColumn('uuid')
@@ -25,6 +27,13 @@ class User {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  toUserResponse(): UserResponse {
+    return {
+      name: this.name,
+      email: this.email,
+    };
+  }
 }
 
 export default User;

@@ -2,7 +2,7 @@ import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import User from '../models/User';
 import CreateUserRequest from '../dto/CreateUserRequest';
-import CreateUserResponse from '../dto/CreateUserResponse';
+import UserResponse from '../dto/UserResponse';
 
 class CreateUserService {
   usersRepository = getRepository(User);
@@ -11,7 +11,7 @@ class CreateUserService {
     name,
     email,
     password,
-  }: CreateUserRequest): Promise<CreateUserResponse> {
+  }: CreateUserRequest): Promise<UserResponse> {
     const checkUserExists = await this.usersRepository.findOne({
       where: { email },
     });
@@ -33,8 +33,8 @@ class CreateUserService {
     return savedUser;
   }
 
-  async saveUser(user: User): Promise<CreateUserResponse> {
-    let responseUser: CreateUserResponse;
+  async saveUser(user: User): Promise<UserResponse> {
+    let responseUser: UserResponse;
 
     try {
       const entitySaved = await this.usersRepository.save(user);
