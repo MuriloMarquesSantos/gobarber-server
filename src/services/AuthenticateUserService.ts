@@ -4,6 +4,7 @@ import { compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 import AuthenticateUserRequest from '../dto/AuthenticateUserRequest';
 import AuthenticateUserResponse from '../dto/AuthenticateUserResponse';
+import authConfig from '../config/auth';
 
 import User from '../models/User';
 
@@ -45,9 +46,10 @@ class AuthenticateUserService {
   }
 
   private generateToken(userId: string) {
-    const token = sign({}, '9b923efebd05903047eed48a0e093e33', {
+    const { secret, expiresIn } = authConfig.jwt;
+    const token = sign({}, secret, {
       subject: userId,
-      expiresIn: '1d',
+      expiresIn,
     });
 
     return token;
