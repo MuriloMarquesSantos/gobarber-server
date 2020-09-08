@@ -22,6 +22,9 @@ class User {
   @Column()
   password: string;
 
+  @Column()
+  avatar: string;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
@@ -32,6 +35,7 @@ class User {
     return {
       name: this.name,
       email: this.email,
+      avatar: this.avatar,
     };
   }
 }

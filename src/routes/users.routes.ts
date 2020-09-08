@@ -30,11 +30,14 @@ usersRouter.patch(
     try {
       const updateUserAvatarService = new UpdateUserAvatarService();
 
-      
+      const user = await updateUserAvatarService.execute({
+        userId: request.user.id,
+        avatarFileName: request.file.filename,
+      });
+      return response.json(user);
     } catch (err) {
       return response.status(400).json({ err: err.message });
     }
-    return response.json({ ok: true });
   },
 );
 export default usersRouter;
