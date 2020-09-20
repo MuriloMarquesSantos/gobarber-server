@@ -24,15 +24,11 @@ appoitmentsRouter.post('/', async (request, response) => {
 
   const createAppointment = new CreateAppointmentService();
 
-  try {
-    const appointment = await createAppointment.execute({
-      date: parsedDate,
-      providerId,
-    });
-    return response.json(appointment);
-  } catch (error) {
-    return response.status(400).json({ message: error.message });
-  }
+  const appointment = await createAppointment.execute({
+    date: parsedDate,
+    providerId,
+  });
+  return response.json(appointment);
 });
 
 export default appoitmentsRouter;
