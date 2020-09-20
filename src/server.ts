@@ -5,6 +5,7 @@ import 'express-async-errors';
 import routes from './routes/index';
 import uploadConfig from './config/upload';
 import AppError from './errors/AppError';
+import ErrorMessages from './errors/ErrorMessages';
 import './database';
 
 const app = express();
@@ -18,7 +19,7 @@ app.use(
       return response.status(error.statusCode).json({ message: error.message });
     }
     console.error(error);
-    return response.status(500).json({ message: 'Internal Server Error' });
+    return response.status(500).json({ message: ErrorMessages.INTERNAL_ERROR });
   },
 );
 
