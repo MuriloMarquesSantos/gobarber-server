@@ -3,6 +3,7 @@ import { hash } from 'bcryptjs';
 import User from '../models/User';
 import CreateUserRequest from '../dto/CreateUserRequest';
 import UserResponse from '../dto/UserResponse';
+import AppError from '../errors/AppError';
 
 class CreateUserService {
   usersRepository = getRepository(User);
@@ -17,7 +18,7 @@ class CreateUserService {
     });
 
     if (checkUserExists) {
-      throw new Error('Email address already used');
+      throw new AppError('Email address already used');
     }
 
     const hashedPassword = await hash(password, 8);
@@ -43,7 +44,7 @@ class CreateUserService {
         email: entitySaved.email,
       };
     } catch (error) {
-      throw new Error('Unable to save user');
+      throw new AppError('Unable to save user');
     }
 
     return responseUser;

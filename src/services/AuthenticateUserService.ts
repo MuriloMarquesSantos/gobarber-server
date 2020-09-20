@@ -5,13 +5,14 @@ import { sign, verify } from 'jsonwebtoken';
 import AuthenticateUserRequest from '../dto/AuthenticateUserRequest';
 import AuthenticateUserResponse from '../dto/AuthenticateUserResponse';
 import authConfig from '../config/auth';
+import AppError from '../errors/AppError';
 
 import User from '../models/User';
 
 class AuthenticateUserService {
   usersRepository = getRepository(User);
 
-  defaultError = new Error('Incorrect email/password combination');
+  defaultError = new AppError('Incorrect email/password combination', 401);
 
   public async execute({
     email,
