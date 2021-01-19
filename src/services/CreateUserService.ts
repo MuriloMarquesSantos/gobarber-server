@@ -4,6 +4,7 @@ import User from '../models/User';
 import CreateUserRequest from '../dto/CreateUserRequest';
 import UserResponse from '../dto/UserResponse';
 import AppError from '../errors/AppError';
+import ErrorMessages from '../errors/ErrorMessages';
 
 class CreateUserService {
   usersRepository = getRepository(User);
@@ -18,7 +19,7 @@ class CreateUserService {
     });
 
     if (checkUserExists) {
-      throw new AppError('Email address already used');
+      throw new AppError(ErrorMessages.EMAIL_ALREADY_USED);
     }
 
     const hashedPassword = await hash(password, 8);
@@ -44,7 +45,7 @@ class CreateUserService {
         email: entitySaved.email,
       };
     } catch (error) {
-      throw new AppError('Unable to save user');
+      throw new AppError(ErrorMessages.SAVE_USER_ERROR);
     }
 
     return responseUser;

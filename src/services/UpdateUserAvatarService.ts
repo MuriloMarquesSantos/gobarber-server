@@ -6,6 +6,7 @@ import User from '../models/User';
 import uploadConfig from '../config/upload';
 import UserResponse from '../dto/UserResponse';
 import AppError from '../errors/AppError';
+import ErrorMessages from '../errors/ErrorMessages';
 
 class UpdateUserAvatarService {
   userRepository = getRepository(User);
@@ -31,7 +32,7 @@ class UpdateUserAvatarService {
     const user = await this.userRepository.findOne(userId);
 
     if (!user) {
-      throw new AppError('User not found', 401);
+      throw new AppError(ErrorMessages.USER_NOT_FOUND, 401);
     }
     return user;
   }
