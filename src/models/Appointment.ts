@@ -15,8 +15,8 @@ class Appointment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  provider: string;
+  @Column({ name: 'provider_id' })
+  providerId: string;
 
   @Column('timestamp with time zone')
   date: Date;
