@@ -1,56 +1,56 @@
-import { getRepository } from 'typeorm';
-import path from 'path';
-import { promises } from 'fs';
-import UserAvatarRequest from '../dto/UserAvatarRequest';
-import User from '../models/User';
-import uploadConfig from '../config/upload';
-import UserResponse from '../dto/UserResponse';
-import AppError from '../errors/AppError';
-import ErrorMessages from '../errors/ErrorMessages';
+// import { getRepository } from 'typeorm';
+// import path from 'path';
+// import { promises } from 'fs';
+// import UserAvatarRequest from '../dto/UserAvatarRequest';
+// import User from '../models/user';
+// import uploadConfig from '../config/upload';
+// import UserResponse from '../dto/UserResponse';
+// import AppError from '../errors/AppError';
+// import ErrorMessages from '../errors/ErrorMessages';
 
-class UpdateUserAvatarService {
-  userRepository = getRepository(User);
+// class UpdateUserAvatarService {
+//   userRepository = getRepository(User);
 
-  public async execute({
-    userId,
-    avatarFileName,
-  }: UserAvatarRequest): Promise<UserResponse> {
-    const user = await this.findUser(userId);
+//   public async execute({
+//     userId,
+//     avatarFileName,
+//   }: UserAvatarRequest): Promise<UserResponse> {
+//     const user = await this.findUser(userId);
 
-    if (user.avatar) {
-      this.unlinkExistingAvatar(user.avatar);
-    }
+//     if (user.avatar) {
+//       this.unlinkExistingAvatar(user.avatar);
+//     }
 
-    const updatedUser = await this.updateUser(user, avatarFileName);
+//     const updatedUser = await this.updateUser(user, avatarFileName);
 
-    const responseUser = updatedUser.toUserResponse();
+//     const responseUser = updatedUser.toUserResponse();
 
-    return responseUser;
-  }
+//     return responseUser;
+//   }
 
-  async findUser(userId: string): Promise<User> {
-    const user = await this.userRepository.findOne(userId);
+//   async findUser(userId: string): Promise<User> {
+//     const user = await this.userRepository.findOne(userId);
 
-    if (!user) {
-      throw new AppError(ErrorMessages.USER_NOT_FOUND, 401);
-    }
-    return user;
-  }
+//     if (!user) {
+//       throw new AppError(ErrorMessages.USER_NOT_FOUND, 401);
+//     }
+//     return user;
+//   }
 
-  async unlinkExistingAvatar(userAvatar: string) {
-    const userAvatarFilePath = path.join(uploadConfig.directory, userAvatar);
-    const userAvatarFileExists = await promises.stat(userAvatarFilePath);
+//   async unlinkExistingAvatar(userAvatar: string) {
+//     const userAvatarFilePath = path.join(uploadConfig.directory, userAvatar);
+//     const userAvatarFileExists = await promises.stat(userAvatarFilePath);
 
-    if (userAvatarFileExists) {
-      await promises.unlink(userAvatarFilePath);
-    }
-  }
+//     if (userAvatarFileExists) {
+//       await promises.unlink(userAvatarFilePath);
+//     }
+//   }
 
-  async updateUser(user: User, avatarFileName: string): Promise<User> {
-    user.avatar = avatarFileName;
+//   async updateUser(user: User, avatarFileName: string): Promise<User> {
+//     user.avatar = avatarFileName;
 
-    return this.userRepository.save(user);
-  }
-}
+//     return this.userRepository.save(user);
+//   }
+// }
 
-export default UpdateUserAvatarService;
+// export default UpdateUserAvatarService;

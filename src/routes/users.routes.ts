@@ -1,13 +1,14 @@
 import { Router } from 'express';
-import multer from 'multer';
+// import multer from 'multer';
 import CreateUserService from '../services/CreateUserService';
-import uploadConfig from '../config/upload';
-import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
+// import uploadConfig from '../config/upload';
+// import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
-import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+// import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
-const upload = multer(uploadConfig);
+// const upload = multer(uploadConfig);
 const usersRouter = Router();
+
 usersRouter.post('/', async (request, response) => {
   const { name, email, password } = request.body;
 
@@ -19,21 +20,21 @@ usersRouter.post('/', async (request, response) => {
     password,
   });
 
-  return response.status(200).json(createdUser);
+  return response.status(201).json(createdUser);
 });
 
-usersRouter.patch(
-  '/avatar',
-  ensureAuthenticated,
-  upload.single('avatar'),
-  async (request, response) => {
-    const updateUserAvatarService = new UpdateUserAvatarService();
+// usersRouter.patch(
+//   '/avatar',
+//   ensureAuthenticated,
+//   upload.single('avatar'),
+//   async (request, response) => {
+//     const updateUserAvatarService = new UpdateUserAvatarService();
 
-    const user = await updateUserAvatarService.execute({
-      userId: request.user.id,
-      avatarFileName: request.file.filename,
-    });
-    return response.json(user);
-  },
-);
+//     const user = await updateUserAvatarService.execute({
+//       userId: request.user.id,
+//       avatarFileName: request.file.filename,
+//     });
+//     return response.json(user);
+//   },
+// );
 export default usersRouter;

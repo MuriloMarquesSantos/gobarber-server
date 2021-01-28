@@ -8,7 +8,7 @@ import authConfig from '../config/auth';
 import ErrorMessages from '../errors/ErrorMessages';
 import AppError from '../errors/AppError';
 
-import User from '../models/User';
+import User from '../models/user';
 
 class AuthenticateUserService {
   usersRepository = getRepository(User);
