@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
-import { sign, verify } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import AuthenticateUserRequest from '../dto/AuthenticateUserRequest';
 import AuthenticateUserResponse from '../dto/AuthenticateUserResponse';
 import authConfig from '../config/auth';
