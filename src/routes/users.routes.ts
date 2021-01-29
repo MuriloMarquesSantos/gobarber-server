@@ -1,6 +1,7 @@
 import { Router } from 'express';
 // import multer from 'multer';
 import CreateUserService from '../services/CreateUserService';
+import AppError from '../errors/AppError';
 // import uploadConfig from '../config/upload';
 // import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
@@ -10,17 +11,22 @@ import CreateUserService from '../services/CreateUserService';
 const usersRouter = Router();
 
 usersRouter.post('/', async (request, response) => {
-  const { name, email, password } = request.body;
+  try {
+    const { name, email, password } = request.body;
 
-  const createUserService = new CreateUserService();
+    const createUserService = new CreateUserService();
 
-  const createdUser = await createUserService.execute({
-    name,
-    email,
-    password,
-  });
-
-  return response.status(201).json(createdUser);
+    const createdUser = await createUserService.execute({
+      name,
+      email,
+      password,
+    });
+    return response.status(201).json(createdUser);
+  } catch (error) {
+    return response.status(error.statusCode).json({
+      message: error.message,
+    });
+  }
 });
 
 // usersRouter.patch(

@@ -1,6 +1,4 @@
 import { getRepository } from 'typeorm';
-import { hash } from 'bcryptjs';
-import { check } from 'prettier';
 import User from '../models/user';
 import CreateUserRequest from '../dto/CreateUserRequest';
 import UserResponse from '../dto/UserResponse';
@@ -10,7 +8,11 @@ import ErrorMessages from '../errors/ErrorMessages';
 class CreateUserService {
   usersRepository = getRepository(User);
 
-  async execute({ name, email, password }: CreateUserRequest): Promise<User> {
+  public async execute({
+    name,
+    email,
+    password,
+  }: CreateUserRequest): Promise<User> {
     const checkUserExists = await this.usersRepository.findOne({
       where: { email },
     });
