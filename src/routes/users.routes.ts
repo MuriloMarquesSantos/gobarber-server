@@ -34,7 +34,9 @@ usersRouter.post('/', async (request, response) => {
 usersRouter.get('/', async (request, response) => {
   const usersRepository = getRepository(User);
   const users = await usersRepository.find();
-  return response.status(200).json(users);
+  const usersResponse = users.map(user => user.toUserResponse());
+
+  return response.status(200).json(usersResponse);
 });
 
 // usersRouter.patch(
