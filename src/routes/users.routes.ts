@@ -1,7 +1,9 @@
 import { Router } from 'express';
 // import multer from 'multer';
+import { getRepository } from 'typeorm';
 import CreateUserService from '../services/CreateUserService';
 import AppError from '../errors/AppError';
+import User from '../models/user';
 // import uploadConfig from '../config/upload';
 // import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
@@ -27,6 +29,12 @@ usersRouter.post('/', async (request, response) => {
       message: error.message,
     });
   }
+});
+
+usersRouter.get('/', async (request, response) => {
+  const usersRepository = getRepository(User);
+  const users = await usersRepository.find();
+  return response.status(200).json(users);
 });
 
 // usersRouter.patch(
