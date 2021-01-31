@@ -36,8 +36,8 @@ function getTokenFromRequest(request: Request) {
 function decodeToken(token: string) {
   try {
     const decoded = verify(token, authConfig.jwt.secret);
-
     console.log(decoded);
+
     return decoded as TokenPayload;
   } catch {
     throw new AppError('Invalid JWT token', 401);

@@ -23,6 +23,7 @@
     "prettier"
   ],
   "rules": {
+    "no-use-before-define": "off",
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
     "import/extensions": [
