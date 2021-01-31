@@ -1,15 +1,16 @@
 import { Router } from 'express';
-// import multer from 'multer';
+import multer from 'multer';
 import { getRepository } from 'typeorm';
+import uploadConfig from '../config/upload';
 import CreateUserService from '../services/CreateUserService';
+
 import AppError from '../errors/AppError';
 import User from '../models/user';
-// import uploadConfig from '../config/upload';
-// import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
+import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
-// import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
-// const upload = multer(uploadConfig);
+const upload = multer(uploadConfig);
 const usersRouter = Router();
 
 usersRouter.post('/', async (request, response) => {
@@ -39,18 +40,13 @@ usersRouter.get('/', async (request, response) => {
   return response.status(200).json(usersResponse);
 });
 
-// usersRouter.patch(
-//   '/avatar',
-//   ensureAuthenticated,
-//   upload.single('avatar'),
-//   async (request, response) => {
-//     const updateUserAvatarService = new UpdateUserAvatarService();
+usersRouter.patch(
+  '/avatar',
+  ensureAuthenticated,
+  upload.single('avatar'),
+  async (request, response) => {
+    const updateUserAvatarService = new UpdateUserAvatarService();
+  },
+);
 
-//     const user = await updateUserAvatarService.execute({
-//       userId: request.user.id,
-//       avatarFileName: request.file.filename,
-//     });
-//     return response.json(user);
-//   },
-// );
 export default usersRouter;
