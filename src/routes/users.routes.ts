@@ -14,22 +14,16 @@ const upload = multer(uploadConfig);
 const usersRouter = Router();
 
 usersRouter.post('/', async (request, response) => {
-  try {
-    const { name, email, password } = request.body;
+  const { name, email, password } = request.body;
 
-    const createUserService = new CreateUserService();
+  const createUserService = new CreateUserService();
 
-    const createdUser = await createUserService.execute({
-      name,
-      email,
-      password,
-    });
-    return response.status(201).json(createdUser);
-  } catch (error) {
-    return response.status(error.statusCode).json({
-      message: error.message,
-    });
-  }
+  const createdUser = await createUserService.execute({
+    name,
+    email,
+    password,
+  });
+  return response.status(201).json(createdUser);
 });
 
 usersRouter.get('/', async (request, response) => {
@@ -45,19 +39,13 @@ usersRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   async (request, response) => {
-    try {
-      const updateUserAvatarService = new UpdateUserAvatarService();
-      const userResponse = await updateUserAvatarService.execute({
-        user_id: request.user.id,
-        avatarFileName: request.file.filename,
-      });
+    const updateUserAvatarService = new UpdateUserAvatarService();
+    const userResponse = await updateUserAvatarService.execute({
+      user_id: request.user.id,
+      avatarFileName: request.file.filename,
+    });
 
-      return response.status(200).json(userResponse);
-    } catch (error) {
-      return response.status(error.statusCode).json({
-        message: error.message,
-      });
-    }
+    return response.status(200).json(userResponse);
   },
 );
 

@@ -25,7 +25,7 @@ function getTokenFromRequest(request: Request) {
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new AppError('JWT token is missing');
+    throw new AppError('JWT token is missing', 401);
   }
 
   const [, token] = authHeader.split(' ');
@@ -36,7 +36,6 @@ function getTokenFromRequest(request: Request) {
 function decodeToken(token: string) {
   try {
     const decoded = verify(token, authConfig.jwt.secret);
-    console.log(decoded);
 
     return decoded as TokenPayload;
   } catch {

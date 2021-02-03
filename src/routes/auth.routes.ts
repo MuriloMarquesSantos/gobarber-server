@@ -8,15 +8,11 @@ authRouter.post('/', async (request, response) => {
 
   const authenticateUser = new AuthenticateUserService();
 
-  try {
-    const { user, token } = await authenticateUser.execute({
-      email,
-      password,
-    });
-    return response.status(200).json({ user, token });
-  } catch (error) {
-    return response.status(error.statusCode).json({ message: error.message });
-  }
+  const { user, token } = await authenticateUser.execute({
+    email,
+    password,
+  });
+  return response.status(200).json({ user, token });
 });
 
 export default authRouter;

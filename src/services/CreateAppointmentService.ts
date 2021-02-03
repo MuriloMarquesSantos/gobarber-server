@@ -20,7 +20,7 @@ class CreateAppointmentService {
     );
 
     if (findAppointmentInSameDate) {
-      throw new AppError(ErrorMessages.APPOINTMENT_DUPLICATED);
+      throw new AppError(ErrorMessages.APPOINTMENT_DUPLICATED, 409);
     }
 
     const appointment = appointmentsRepository.create({
