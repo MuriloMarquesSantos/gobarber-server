@@ -24,6 +24,7 @@
     "mysql": "^2.18.1",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.6.0",
     "typeorm": "^0.2.30",
     "uuidv4": "^6.1.1"
   },

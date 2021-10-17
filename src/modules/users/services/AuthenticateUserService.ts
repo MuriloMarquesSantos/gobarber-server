@@ -3,16 +3,21 @@ import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import ErrorMessages from '@shared/errors/ErrorMessages';
 import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
 import AuthenticateUserRequest from '../dtos/AuthenticateUserRequest';
 import AuthenticateUserResponse from '../dtos/AuthenticateUserResponse';
 
 import User from '../infra/typeorm/entities/user';
 import IUsersRepository from '../repositories/IUsersRepository';
 
+@injectable()
 class AuthenticateUserService {
   private usersRepository: IUsersRepository;
 
-  constructor(usersRepository: IUsersRepository) {
+  constructor(
+    @inject('UsersRepository')
+    usersRepository: IUsersRepository,
+  ) {
     this.usersRepository = usersRepository;
   }
 

@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import path from 'path';
 import { promises } from 'fs';
+import { injectable, inject } from 'tsyringe';
 import UserAvatarRequest from '../dtos/UserAvatarRequest';
 import User from '../infra/typeorm/entities/user';
 import uploadConfig from '../../../config/upload';
@@ -9,10 +10,14 @@ import AppError from '../../../shared/errors/AppError';
 import ErrorMessages from '../../../shared/errors/ErrorMessages';
 import IUsersRepository from '../repositories/IUsersRepository';
 
+@injectable()
 class UpdateUserAvatarService {
   private usersRepository: IUsersRepository;
 
-  constructor(usersRepository: IUsersRepository) {
+  constructor(
+    @inject('UsersRepository')
+    usersRepository: IUsersRepository,
+  ) {
     this.usersRepository = usersRepository;
   }
 

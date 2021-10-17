@@ -1,14 +1,19 @@
 import { hash } from 'bcryptjs';
 import AppError from '@shared/errors/AppError';
 import ErrorMessages from '@shared/errors/ErrorMessages';
+import { inject, injectable } from 'tsyringe';
 import CreateUserRequest from '../dtos/CreateUserRequest';
 import UserResponse from '../dtos/UserResponse';
 import IUsersRepository from '../repositories/IUsersRepository';
 
+@injectable()
 class CreateUserService {
   private usersRepository: IUsersRepository;
 
-  constructor(usersRepository: IUsersRepository) {
+  constructor(
+    @inject('UsersRepository')
+    usersRepository: IUsersRepository,
+  ) {
     this.usersRepository = usersRepository;
   }
 
