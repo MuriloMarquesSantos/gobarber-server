@@ -1,12 +1,12 @@
 import { getRepository } from 'typeorm';
 import path from 'path';
 import { promises } from 'fs';
-import UserAvatarRequest from '../dto/UserAvatarRequest';
-import User from '../models/user';
-import uploadConfig from '../config/upload';
-import UserResponse from '../dto/UserResponse';
-import AppError from '../errors/AppError';
-import ErrorMessages from '../errors/ErrorMessages';
+import UserAvatarRequest from '../dtos/UserAvatarRequest';
+import User from '../infra/entities/user';
+import uploadConfig from '../../../config/upload';
+import UserResponse from '../dtos/UserResponse';
+import AppError from '../../../shared/errors/AppError';
+import ErrorMessages from '../../../shared/errors/ErrorMessages';
 
 class UpdateUserAvatarService {
   userRepository = getRepository(User);

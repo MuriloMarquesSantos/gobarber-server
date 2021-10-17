@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
-import User from '../models/user';
-import CreateUserRequest from '../dto/CreateUserRequest';
-import UserResponse from '../dto/UserResponse';
-import AppError from '../errors/AppError';
-import ErrorMessages from '../errors/ErrorMessages';
+import AppError from '@shared/errors/AppError';
+import ErrorMessages from '@shared/errors/ErrorMessages';
+import User from '../infra/entities/user';
+import CreateUserRequest from '../dtos/CreateUserRequest';
+import UserResponse from '../dtos/UserResponse';
 
 class CreateUserService {
   usersRepository = getRepository(User);

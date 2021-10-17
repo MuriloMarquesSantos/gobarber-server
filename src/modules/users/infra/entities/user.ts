@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import UserResponse from '../dto/UserResponse';
+import UserResponse from '../../../dto/UserResponse';
 
 @Entity('users')
 class User {

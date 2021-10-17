@@ -2,13 +2,13 @@
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import AuthenticateUserRequest from '../dto/AuthenticateUserRequest';
-import AuthenticateUserResponse from '../dto/AuthenticateUserResponse';
-import authConfig from '../config/auth';
-import ErrorMessages from '../errors/ErrorMessages';
-import AppError from '../errors/AppError';
+import authConfig from '@config/auth';
+import ErrorMessages from '@shared/errors/ErrorMessages';
+import AppError from '@shared/errors/AppError';
+import AuthenticateUserRequest from '../dtos/AuthenticateUserRequest';
+import AuthenticateUserResponse from '../dtos/AuthenticateUserResponse';
 
-import User from '../models/user';
+import User from '../infra/entities/user';
 
 class AuthenticateUserService {
   usersRepository = getRepository(User);

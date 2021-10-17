@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import express, { Router } from 'express';
 
-import appointmentsRouter from './appointments.routes';
-import usersRouter from './users.routes';
-import authRouter from './auth.routes';
+import usersRouter from '@modules/users/infra/http/users.routes';
+import appointmentsRouter from '@modules/appointments/infra/http/appointments.routes';
+import authRouter from '@modules/users/infra/http/auth.routes';
 
 const routes = Router();
 routes.use(express.json());
