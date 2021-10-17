@@ -2,8 +2,8 @@ import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import ErrorMessages from '@shared/errors/ErrorMessages';
 import AppError from '@shared/errors/AppError';
-import Appointment from '../infra/entities/appointments';
-import AppointmentRepository from '../infra/repositories/AppointmentRepository';
+import Appointment from '../infra/typeorm/entities/appointments';
+import AppointmentRepository from '../infra/typeorm/repositories/AppointmentRepository';
 
 interface Request {
   providerId: string;
@@ -23,12 +23,10 @@ class CreateAppointmentService {
       throw new AppError(ErrorMessages.APPOINTMENT_DUPLICATED, 409);
     }
 
-    const appointment = appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       providerId,
       date: appointmentDate,
     });
-
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }
