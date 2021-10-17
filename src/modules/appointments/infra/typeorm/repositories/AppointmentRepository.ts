@@ -18,6 +18,10 @@ class AppointmentRepository implements IAppointmentsRepository {
     return findAppointment || undefined;
   }
 
+  public async findAll(): Promise<Appointment[]> {
+    return this.ormRepository.find();
+  }
+
   public async create({
     providerId,
     date,
