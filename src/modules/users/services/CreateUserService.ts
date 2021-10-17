@@ -1,22 +1,23 @@
-import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import AppError from '@shared/errors/AppError';
 import ErrorMessages from '@shared/errors/ErrorMessages';
-import User from '../infra/entities/user';
 import CreateUserRequest from '../dtos/CreateUserRequest';
 import UserResponse from '../dtos/UserResponse';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 class CreateUserService {
-  usersRepository = getRepository(User);
+  private usersRepository: IUsersRepository;
+
+  constructor(usersRepository: IUsersRepository) {
+    this.usersRepository = usersRepository;
+  }
 
   public async execute({
     name,
     email,
     password,
   }: CreateUserRequest): Promise<UserResponse> {
-    const checkUserExists = await this.usersRepository.findOne({
-      where: { email },
-    });
+    const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
       throw new AppError(ErrorMessages.SAVE_USER_ERROR);
@@ -24,13 +25,11 @@ class CreateUserService {
 
     const hashedPassword = await hash(password, 8);
 
-    const user = this.usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
-
-    await this.usersRepository.save(user);
 
     return user.toUserResponse();
   }

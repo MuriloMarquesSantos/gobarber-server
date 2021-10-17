@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
@@ -8,10 +6,15 @@ import AppError from '@shared/errors/AppError';
 import AuthenticateUserRequest from '../dtos/AuthenticateUserRequest';
 import AuthenticateUserResponse from '../dtos/AuthenticateUserResponse';
 
-import User from '../infra/entities/user';
+import User from '../infra/typeorm/entities/user';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 class AuthenticateUserService {
-  usersRepository = getRepository(User);
+  private usersRepository: IUsersRepository;
+
+  constructor(usersRepository: IUsersRepository) {
+    this.usersRepository = usersRepository;
+  }
 
   defaultError = new AppError(ErrorMessages.INCORRECT_PASSWORD, 401);
 
@@ -30,7 +33,7 @@ class AuthenticateUserService {
   }
 
   private async getUserByEmail(email: string): Promise<User> {
-    const user = await this.usersRepository.findOne({ email });
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw this.defaultError;

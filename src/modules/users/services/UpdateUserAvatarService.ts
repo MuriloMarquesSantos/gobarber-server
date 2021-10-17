@@ -2,14 +2,19 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import { promises } from 'fs';
 import UserAvatarRequest from '../dtos/UserAvatarRequest';
-import User from '../infra/entities/user';
+import User from '../infra/typeorm/entities/user';
 import uploadConfig from '../../../config/upload';
 import UserResponse from '../dtos/UserResponse';
 import AppError from '../../../shared/errors/AppError';
 import ErrorMessages from '../../../shared/errors/ErrorMessages';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 class UpdateUserAvatarService {
-  userRepository = getRepository(User);
+  private usersRepository: IUsersRepository;
+
+  constructor(usersRepository: IUsersRepository) {
+    this.usersRepository = usersRepository;
+  }
 
   public async execute({
     userId,
@@ -29,7 +34,7 @@ class UpdateUserAvatarService {
   }
 
   async findUser(userId: string): Promise<User> {
-    const user = await this.userRepository.findOne(userId);
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new AppError(ErrorMessages.USER_NOT_FOUND, 401);
@@ -49,7 +54,7 @@ class UpdateUserAvatarService {
   async updateUser(user: User, avatarFileName: string): Promise<User> {
     user.avatar = avatarFileName;
 
-    return this.userRepository.save(user);
+    return this.usersRepository.create(user);
   }
 }
 
