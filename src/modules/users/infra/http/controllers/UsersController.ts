@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
 import CreateUserService from '@modules/users/services/CreateUserService';
-
-import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
-
 import { container } from 'tsyringe';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
@@ -29,16 +26,6 @@ class UsersController {
     const usersResponse = users.map(user => user.toUserResponse());
 
     return response.status(200).json(usersResponse);
-  }
-
-  public async updateUserAvatar(request: Request, response: Response) {
-    const updateUserAvatarService = container.resolve(UpdateUserAvatarService);
-    const userResponse = await updateUserAvatarService.execute({
-      userId: request.user.id,
-      avatarFileName: request.file.filename,
-    });
-
-    return response.status(200).json(userResponse);
   }
 }
 
