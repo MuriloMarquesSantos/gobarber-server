@@ -23,6 +23,10 @@ This project is the server of [Go Barber Web](https://github.com/MuriloMarquesSa
 - ```yarn```
 - ```yarn dev:server```
 
+## Test the API
+
+You may test the api using this link ```https://documenter.getpostman.com/view/4694407/UV5Xid4m```.
+Keep in mind that it shall be updated as the system evolves.
 ## Contribution
 
 Contributions are welcome, feel free to open pull requests or to contact me by e-mail.
