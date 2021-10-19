@@ -36,7 +36,7 @@ class User {
       name: this.name,
       email: this.email,
       id: this.id,
-      avatar: this.avatar,
+      avatar: `http://localhost:3333/files/${this.avatar}`,
     };
   }
 }
