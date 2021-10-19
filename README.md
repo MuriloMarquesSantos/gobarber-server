@@ -25,7 +25,7 @@ This project is the server of [Go Barber Web](https://github.com/MuriloMarquesSa
 
 ## Test the API
 
-You may test the api using this link ```https://documenter.getpostman.com/view/4694407/UV5Xid4m```.
+You may check how test the api using this link ```https://documenter.getpostman.com/view/4694407/UV5Xid4m```. </br>
 Keep in mind that it shall be updated as the system evolves.
 ## Contribution
 
