@@ -59,7 +59,7 @@ class UpdateUserAvatarService {
   async updateUser(user: User, avatarFileName: string): Promise<User> {
     user.avatar = avatarFileName;
 
-    return this.usersRepository.create(user);
+    return this.usersRepository.save(user);
   }
 }
 
