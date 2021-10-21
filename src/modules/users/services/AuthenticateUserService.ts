@@ -1,4 +1,3 @@
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import ErrorMessages from '@shared/errors/ErrorMessages';
@@ -6,6 +5,7 @@ import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import AuthenticateUserRequest from '../dtos/AuthenticateUserRequest';
 import AuthenticateUserResponse from '../dtos/AuthenticateUserResponse';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 import User from '../infra/typeorm/entities/user';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -14,11 +14,16 @@ import IUsersRepository from '../repositories/IUsersRepository';
 class AuthenticateUserService {
   private usersRepository: IUsersRepository;
 
+  private hashProvider: IHashProvider;
+
   constructor(
     @inject('UsersRepository')
     usersRepository: IUsersRepository,
+    @inject('HashProvider')
+    hashProvider: IHashProvider,
   ) {
     this.usersRepository = usersRepository;
+    this.hashProvider = hashProvider;
   }
 
   defaultError = new AppError(ErrorMessages.INCORRECT_PASSWORD, 401);
@@ -48,7 +53,10 @@ class AuthenticateUserService {
   }
 
   private async comparePasswords(givenPassword: string, userPassword: string) {
-    const passwordMatched = await compare(givenPassword, userPassword);
+    const passwordMatched = await this.hashProvider.compareHash(
+      givenPassword,
+      userPassword,
+    );
 
     if (!passwordMatched) {
       throw this.defaultError;

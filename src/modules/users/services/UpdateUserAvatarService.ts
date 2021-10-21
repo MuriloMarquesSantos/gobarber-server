@@ -1,4 +1,3 @@
-import { getRepository } from 'typeorm';
 import path from 'path';
 import { promises } from 'fs';
 import { injectable, inject } from 'tsyringe';
