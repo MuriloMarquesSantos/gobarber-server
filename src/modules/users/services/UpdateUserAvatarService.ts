@@ -1,9 +1,7 @@
-import path from 'path';
-import { promises } from 'fs';
 import { injectable, inject } from 'tsyringe';
+import IStorageProvider from '@shared/providers/StorageProvider/models/IStorageProvider';
 import UserAvatarRequest from '../dtos/UserAvatarRequest';
 import User from '../infra/typeorm/entities/user';
-import uploadConfig from '../../../config/upload';
 import UserResponse from '../dtos/UserResponse';
 import AppError from '../../../shared/errors/AppError';
 import ErrorMessages from '../../../shared/errors/ErrorMessages';
@@ -13,11 +11,16 @@ import IUsersRepository from '../repositories/IUsersRepository';
 class UpdateUserAvatarService {
   private usersRepository: IUsersRepository;
 
+  private storageProvider: IStorageProvider;
+
   constructor(
     @inject('UsersRepository')
     usersRepository: IUsersRepository,
+    @inject('StorageProvider')
+    storageProvider: IStorageProvider,
   ) {
     this.usersRepository = usersRepository;
+    this.storageProvider = storageProvider;
   }
 
   public async execute({
@@ -27,10 +30,12 @@ class UpdateUserAvatarService {
     const user = await this.findUser(userId);
 
     if (user.avatar) {
-      this.unlinkExistingAvatar(user.avatar);
+      this.storageProvider.deleteFile(user.avatar);
     }
 
-    const updatedUser = await this.updateUser(user, avatarFileName);
+    const fileName = await this.storageProvider.saveFile(avatarFileName);
+
+    const updatedUser = await this.updateUser(user, fileName);
 
     const responseUser = updatedUser.toUserResponse();
 
@@ -44,15 +49,6 @@ class UpdateUserAvatarService {
       throw new AppError(ErrorMessages.USER_NOT_FOUND, 401);
     }
     return user;
-  }
-
-  async unlinkExistingAvatar(userAvatar: string) {
-    const userAvatarFilePath = path.join(uploadConfig.directory, userAvatar);
-    const userAvatarFileExists = await promises.stat(userAvatarFilePath);
-
-    if (userAvatarFileExists) {
-      await promises.unlink(userAvatarFilePath);
-    }
   }
 
   async updateUser(user: User, avatarFileName: string): Promise<User> {
