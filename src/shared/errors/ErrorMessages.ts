@@ -6,6 +6,7 @@ enum ErrorMessages {
   EMAIL_ALREADY_USED = 'Email address already used',
   SAVE_USER_ERROR = 'User already exists',
   USER_NOT_FOUND = 'User not found',
+  USER_TOKEN_DOES_NOT_EXIST = 'User Token Does not Exist',
 }
 
 export default ErrorMessages;
