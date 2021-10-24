@@ -10,10 +10,18 @@ export default class UserTokensRepository implements IUserTokensRepository {
   }
 
   public async generate(userId: string): Promise<UserToken> {
-    return Promise.resolve(new UserToken());
+    const userToken = this.ormRepository.create({
+      userId,
+    });
+
+    return this.ormRepository.save(userToken);
   }
 
   public async findByToken(token: string): Promise<UserToken | undefined> {
-    return undefined;
+    const userToken = await this.ormRepository.findOne({
+      where: { token },
+    });
+
+    return userToken;
   }
 }
